@@ -1,0 +1,59 @@
+server:
+  port: 8886
+
+spring:
+  application:
+    name: Api_Gateway
+    
+  cloud:
+    gateway:
+      routes:
+      - id: user-authentication-service
+        uri: lb://user-authentication-service
+        predicates:
+            - Path=/auth/**
+            
+      - id: ACCOUNT-MANAGEMENT-SERVICE
+        uri: lb://ACCOUNT-MANAGEMENT-SERVICE
+        predicates:
+            - Path=/accounts/**
+            
+      - id: fund-transfer-service
+        uri: lb://fund-transfer-service
+        predicates:
+            - Path=/transfer/** 
+            
+      - id: transaction-management-service
+        uri: lb://transaction-management-service
+        predicates:
+            - Path=/transactions/**                    
+         
+        
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+        defaultZone: http://localhost:8885/eureka
+
+
+
+logging:
+    level:
+       com:
+          netflix:
+              discovery: DEBUG
+              
+            
+ 
+       org:
+          springframework:
+              cloud:
+                  gateway: DEBUG
+
+               
+    
+      
